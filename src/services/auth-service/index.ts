@@ -1,8 +1,11 @@
 import { users } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { duplicatedEmailError } from "../../errors";
+import { duplicatedEmailError, invalidCredentialsError } from "../../errors";
 import authRepository from "../../repositories/auth-repository";
+import jwt from "jsonwebtoken";
+import { jwtSecret } from "../../config";
 
+//CREATE USER SECTION
 export async function createUser({
   name,
   email,
@@ -27,8 +30,34 @@ async function checkForSameEmail(email: string) {
 
 export type CreateUserParams = Pick<users, "name" | "email" | "password">;
 
+//LOGIN USER SECTION
+
+export async function loginUser({ email, password }: LoginUserParams) {
+  const user = await checkIfUserExists(email);
+  await checkPassword(password, user.password);
+
+  const token = jwt.sign({ userId: user.id }, jwtSecret);
+
+  return token;
+}
+
+async function checkIfUserExists(email: string) {
+  const userExists = await authRepository.findByEmail(email);
+  if (!userExists) throw invalidCredentialsError();
+
+  return userExists;
+}
+
+async function checkPassword(password: string, userPassword: string) {
+  const isPasswordValid = await bcrypt.compare(password, userPassword);
+  if (!isPasswordValid) throw invalidCredentialsError();
+}
+
+export type LoginUserParams = Pick<users, "email" | "password">;
+
 const authService = {
   createUser,
+  loginUser,
 };
 
 export default authService;
