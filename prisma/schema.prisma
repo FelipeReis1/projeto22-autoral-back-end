@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model adresses {
+  id        Int      @id(map: "adresses_pk") @default(autoincrement())
+  userId    Int
+  address   String   @db.VarChar(255)
+  city      String   @db.VarChar(100)
+  state     String   @db.VarChar(2)
+  cep       String   @db.VarChar(10)
+  createdAt DateTime @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  updatedAt DateTime @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  users     users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "adresses_fk0")
+}
+
+model cart {
+  id        Int      @id(map: "cart_pk") @default(autoincrement())
+  userId    Int
+  productId Int
+  amount    Int
+  users     users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_fk0")
+  products  products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_fk1")
+}
+
+model products {
+  id          Int         @id(map: "products_pk") @default(autoincrement())
+  name        String      @db.VarChar(255)
+  description String      @db.VarChar(255)
+  price       Decimal     @db.Decimal
+  image       String
+  itemQuality Decimal     @db.Decimal
+  category    String      @db.VarChar(100)
+  createdAt   DateTime    @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  updatedAt   DateTime    @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  cart        cart[]
+  purchases   purchases[]
+  stock       stock?
+}
+
+model purchases {
+  id           Int      @id(map: "purchases_pk") @default(autoincrement())
+  userId       Int
+  productId    Int
+  purchaseDate DateTime @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  users        users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "purchases_fk0")
+  products     products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "purchases_fk1")
+}
+
+model stock {
+  productId Int      @id(map: "stock_pk")
+  amount    Int
+  products  products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "stock_fk0")
+}
+
+model users {
+  id        Int         @id(map: "users_pk") @default(autoincrement())
+  email     String      @unique @db.VarChar(255)
+  name      String      @db.VarChar(120)
+  password  String      @db.VarChar(120)
+  type      String?     @db.VarChar(4)
+  createdAt DateTime    @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  updatedAt DateTime    @default(dbgenerated("'2023-06-04'::date")) @db.Date
+  adresses  adresses[]
+  cart      cart[]
+  purchases purchases[]
+}
