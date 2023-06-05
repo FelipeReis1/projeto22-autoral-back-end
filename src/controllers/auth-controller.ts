@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import authService from "../services/auth-service";
+import authService, { LoginUserParams } from "../services/auth-service";
 
 export async function createUser(req: Request, res: Response) {
   const { name, email, password } = req.body;
@@ -16,8 +16,17 @@ export async function createUser(req: Request, res: Response) {
       return res.status(httpStatus.CONFLICT).send(error);
     }
     {
-      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).send(error);
     }
+  }
+}
+
+export async function loginUser(req: Request, res: Response) {
+  const { email, password } = req.body as LoginUserParams;
+  try {
+    const token = await authService.loginUser({ email, password });
+    return res.status(httpStatus.OK).send({ token });
+  } catch (error: any) {
+    return res.status(httpStatus.UNAUTHORIZED).send(error.message);
   }
 }
