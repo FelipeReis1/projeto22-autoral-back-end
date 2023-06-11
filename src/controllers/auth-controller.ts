@@ -25,7 +25,7 @@ export async function loginUser(req: Request, res: Response) {
   const { email, password } = req.body as LoginUserParams;
   try {
     const token = await authService.loginUser({ email, password });
-    return res.status(httpStatus.OK).send({ token });
+    return res.status(httpStatus.OK).send(token);
   } catch (error: any) {
     return res.status(httpStatus.UNAUTHORIZED).send(error.message);
   }
