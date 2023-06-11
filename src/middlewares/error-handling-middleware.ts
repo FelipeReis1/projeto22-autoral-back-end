@@ -9,12 +9,6 @@ export function handleApplicationErrors(
   // eslint-disable-next-line
   _next: NextFunction
 ) {
-  if (err.name === "CannotEnrollBeforeStartDateError") {
-    return res.status(httpStatus.BAD_REQUEST).send({
-      message: err.message,
-    });
-  }
-
   if (err.name === "ConflictError" || err.name === "DuplicatedEmailError") {
     return res.status(httpStatus.CONFLICT).send({
       message: err.message,
@@ -35,18 +29,6 @@ export function handleApplicationErrors(
 
   if (err.name === "NotFoundError") {
     return res.status(httpStatus.NOT_FOUND).send({
-      message: err.message,
-    });
-  }
-
-  if (err.name === "PaymentRequiredError") {
-    return res.status(httpStatus.PAYMENT_REQUIRED).send({
-      message: err.message,
-    });
-  }
-
-  if (err.name === "ForbiddenError") {
-    return res.status(httpStatus.FORBIDDEN).send({
       message: err.message,
     });
   }
