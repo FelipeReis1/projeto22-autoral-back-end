@@ -32,3 +32,26 @@ export async function getProducts(req: Request, res: Response) {
     return res.status(httpStatus.NOT_FOUND).send(error);
   }
 }
+
+export async function updateProduct(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const { name, description, price, image, itemQuality, category } = req.body;
+    const product = await productsService.updateProduct(Number(id), {
+      name,
+      description,
+      price,
+      image,
+      itemQuality,
+      category,
+    });
+    return res.status(httpStatus.OK).send(product);
+  } catch (error: any) {
+    if (error.name === "ConflictError") {
+      return res.status(httpStatus.CONFLICT).send(error);
+    }
+    {
+      return res.status(httpStatus.BAD_REQUEST).send(error);
+    }
+  }
+}
