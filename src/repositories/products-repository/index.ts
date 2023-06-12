@@ -23,10 +23,29 @@ async function getProducts() {
   return prisma.products.findMany();
 }
 
+async function updateProduct(
+  id: number,
+  data: Prisma.productsUncheckedUpdateInput
+) {
+  return prisma.products.update({
+    where: { id: id },
+    data: {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      image: data.image,
+      itemQuality: data.itemQuality,
+      category: data.category,
+      updatedAt: new Date(Date.now()),
+    },
+  });
+}
+
 const productsRepository = {
   createProduct,
   getProduct,
   getProducts,
+  updateProduct,
 };
 
 export default productsRepository;
