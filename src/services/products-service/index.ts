@@ -1,7 +1,9 @@
 import { products } from "@prisma/client";
 import productsRepository from "../../repositories/products-repository";
 import { conflictError } from "../../errors/conflict-error";
+import { badRequestError } from "../../errors/bad-request-error";
 import { Decimal } from "@prisma/client/runtime";
+import { notFoundError } from "../../errors";
 
 export async function createProduct({
   name,
@@ -52,6 +54,8 @@ async function checkForSameProduct(
 
 export async function getProducts() {
   const products = await productsRepository.getProducts();
+  if (!products) throw notFoundError();
+
   return products;
 }
 
@@ -84,6 +88,12 @@ export async function updateProduct(
   });
 }
 
+export async function deleteProduct(id: number): Promise<void> {
+  const product = await productsRepository.findProductById(id);
+  if (!product) throw notFoundError();
+  await productsRepository.deleteProduct(id);
+}
+
 export type CreateProductParams = Pick<
   products,
   "name" | "description" | "price" | "image" | "itemQuality" | "category"
@@ -93,6 +103,7 @@ const productsService = {
   createProduct,
   getProducts,
   updateProduct,
+  deleteProduct,
 };
 
 export default productsService;
