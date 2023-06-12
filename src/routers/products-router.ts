@@ -4,6 +4,7 @@ import {
   getProducts,
   createProduct,
   updateProduct,
+  deleteProduct,
 } from "../controllers/products-controller";
 import { productSchema, productUpdateSchema } from "../schemas";
 
@@ -20,6 +21,6 @@ productsRouter.patch(
   validateBody(productUpdateSchema),
   updateProduct
 );
-//productsRouter.delete("/", deleteProduct);
+productsRouter.delete("/products-delete/:id", deleteProduct);
 
 export { productsRouter };
