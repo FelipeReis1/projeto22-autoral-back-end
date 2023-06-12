@@ -16,10 +16,10 @@ export async function createProduct(req: Request, res: Response) {
     return res.status(httpStatus.CREATED).send(product);
   } catch (error: any) {
     if (error.name === "ConflictError") {
-      return res.status(httpStatus.CONFLICT).send(error);
+      return res.status(httpStatus.CONFLICT).send(error.message);
     }
     {
-      return res.status(httpStatus.BAD_REQUEST).send(error);
+      return res.status(httpStatus.BAD_REQUEST).send(error.message);
     }
   }
 }
@@ -28,8 +28,8 @@ export async function getProducts(req: Request, res: Response) {
   try {
     const products = await productsService.getProducts();
     return res.status(httpStatus.OK).send(products);
-  } catch (error) {
-    return res.status(httpStatus.NOT_FOUND).send(error);
+  } catch (error: any) {
+    return res.status(httpStatus.NOT_FOUND).send(error.message);
   }
 }
 
@@ -48,10 +48,24 @@ export async function updateProduct(req: Request, res: Response) {
     return res.status(httpStatus.OK).send(product);
   } catch (error: any) {
     if (error.name === "ConflictError") {
-      return res.status(httpStatus.CONFLICT).send(error);
+      return res.status(httpStatus.CONFLICT).send(error.message);
     }
     {
-      return res.status(httpStatus.BAD_REQUEST).send(error);
+      return res.status(httpStatus.BAD_REQUEST).send(error.message);
+    }
+  }
+}
+
+export async function deleteProduct(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    await productsService.deleteProduct(Number(id));
+    return res.sendStatus(httpStatus.NO_CONTENT);
+  } catch (error: any) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error.message);
+    } else {
+      return res.status(httpStatus.BAD_REQUEST).send(error.message);
     }
   }
 }
