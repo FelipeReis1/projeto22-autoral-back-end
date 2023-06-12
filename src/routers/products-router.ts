@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { validateBody } from "../middlewares";
-import { getProducts, createProduct } from "../controllers/products-controller";
-import { productSchema } from "../schemas";
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+} from "../controllers/products-controller";
+import { productSchema, productUpdateSchema } from "../schemas";
 
 const productsRouter = Router();
 
@@ -11,11 +15,11 @@ productsRouter.post(
   validateBody(productSchema),
   createProduct
 );
-// productsRouter.put(
-//   "/productsUpdate",
-//   validateBody(productsSchema),
-//   updateProduct
-// );
-// productsRouter.delete("/", deleteProduct);
+productsRouter.patch(
+  "/products-update/:id",
+  validateBody(productUpdateSchema),
+  updateProduct
+);
+//productsRouter.delete("/", deleteProduct);
 
 export { productsRouter };
