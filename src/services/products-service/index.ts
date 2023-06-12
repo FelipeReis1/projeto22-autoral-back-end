@@ -55,6 +55,35 @@ export async function getProducts() {
   return products;
 }
 
+export async function updateProduct(
+  id: number,
+  {
+    name,
+    description,
+    price,
+    image,
+    itemQuality,
+    category,
+  }: CreateProductParams
+): Promise<products> {
+  await checkForSameProduct(
+    name,
+    description,
+    price,
+    image,
+    itemQuality,
+    category
+  );
+  return productsRepository.updateProduct(id, {
+    name,
+    description,
+    price,
+    image,
+    itemQuality,
+    category,
+  });
+}
+
 export type CreateProductParams = Pick<
   products,
   "name" | "description" | "price" | "image" | "itemQuality" | "category"
@@ -63,6 +92,7 @@ export type CreateProductParams = Pick<
 const productsService = {
   createProduct,
   getProducts,
+  updateProduct,
 };
 
 export default productsService;
