@@ -41,11 +41,21 @@ async function updateProduct(
   });
 }
 
+async function deleteProduct(id: number) {
+  return prisma.products.delete({ where: { id: id } });
+}
+
+async function findProductById(id: number) {
+  return prisma.products.findUnique({ where: { id } });
+}
+
 const productsRepository = {
   createProduct,
   getProduct,
   getProducts,
   updateProduct,
+  deleteProduct,
+  findProductById,
 };
 
 export default productsRepository;
