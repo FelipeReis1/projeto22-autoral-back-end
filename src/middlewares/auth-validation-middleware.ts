@@ -1,8 +1,8 @@
-import { unauthorizedError } from "../errors/unauthorized-error.js";
+import { unauthorizedError } from "../errors/unauthorized-error";
 import authRepository from "../repositories/auth-repository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { jwtSecret } from "../config/envs.js";
+import { jwtSecret } from "../config/envs";
 
 async function authValidation(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
