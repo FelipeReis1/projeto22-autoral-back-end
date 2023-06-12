@@ -36,7 +36,7 @@ export async function loginUser({ email, password }: LoginUserParams) {
   const user = await checkIfUserExists(email);
   await checkPassword(password, user.password);
 
-  const token = jwt.sign({ userId: user.id }, jwtSecret);
+  const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: 86400 });
 
   return token;
 }
