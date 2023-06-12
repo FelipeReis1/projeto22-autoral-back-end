@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi, { optional } from "joi";
 import { CreateProductParams } from "../services";
 
 export const productSchema = Joi.object<CreateProductParams>({
@@ -8,4 +8,13 @@ export const productSchema = Joi.object<CreateProductParams>({
   image: Joi.string().required(),
   itemQuality: Joi.number().required(),
   category: Joi.string().required(),
+});
+
+export const productUpdateSchema = Joi.object<CreateProductParams>({
+  name: Joi.string().optional(),
+  description: Joi.string().optional(),
+  price: Joi.number().optional(),
+  image: Joi.string().optional(),
+  itemQuality: Joi.number().optional(),
+  category: Joi.string().optional(),
 });
