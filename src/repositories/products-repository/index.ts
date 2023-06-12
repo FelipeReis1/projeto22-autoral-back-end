@@ -20,7 +20,7 @@ async function getProduct(
 }
 
 async function getProducts() {
-  return prisma.products.findMany();
+  return prisma.products.findMany({ orderBy: { id: "asc" } });
 }
 
 async function updateProduct(
