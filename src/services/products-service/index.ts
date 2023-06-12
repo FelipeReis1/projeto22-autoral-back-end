@@ -1,7 +1,6 @@
 import { products } from "@prisma/client";
 import productsRepository from "../../repositories/products-repository";
 import { conflictError } from "../../errors/conflict-error";
-import { badRequestError } from "../../errors/bad-request-error";
 import { Decimal } from "@prisma/client/runtime";
 import { notFoundError } from "../../errors";
 
