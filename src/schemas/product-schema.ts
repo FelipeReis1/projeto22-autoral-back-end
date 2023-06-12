@@ -1,4 +1,4 @@
-import Joi, { optional } from "joi";
+import Joi from "joi";
 import { CreateProductParams } from "../services";
 
 export const productSchema = Joi.object<CreateProductParams>({
