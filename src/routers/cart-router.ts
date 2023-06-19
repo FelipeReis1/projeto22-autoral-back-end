@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getCart,
   createCart,
-  // deleteFromCart,
+  deleteCart,
   // updateCart,
 } from "../controllers/cart-controller";
 
@@ -10,7 +10,7 @@ const cartRouter = Router();
 
 cartRouter.get("/:id", getCart);
 cartRouter.post("/", createCart);
-// cartRouter.delete("/cart/:id", deleteFromCart);
-// cartRouter.patch("/cart/:id", updateCart);
+cartRouter.delete("/:id", deleteCart);
+// cartRouter.patch("/:id", updateCart);
 
 export { cartRouter };
