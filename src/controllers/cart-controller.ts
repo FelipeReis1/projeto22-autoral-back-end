@@ -25,3 +25,17 @@ export async function createCart(req: Request, res: Response) {
     return res.status(httpStatus.BAD_REQUEST).send(error.message);
   }
 }
+
+export async function deleteCart(req: Request, res: Response) {
+  const { id } = req.params;
+  try {
+    await cartService.deleteCart(Number(id));
+    return res.sendStatus(httpStatus.NO_CONTENT);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error.message);
+    } else {
+      return res.status(httpStatus.BAD_REQUEST).send(error.message);
+    }
+  }
+}
