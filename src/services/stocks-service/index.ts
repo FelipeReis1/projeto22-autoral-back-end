@@ -16,9 +16,23 @@ export async function createProductStock(id: number, amount: number) {
   return await stocksRepository.createProductStock(product.id, amount);
 }
 
+export async function deleteProductStock(productId: number): Promise<void> {
+  const productExists = await stocksRepository.getProductStock(
+    Number(productId)
+  );
+  if (!productExists) throw notFoundError();
+  await stocksRepository.deleteProductStock(productId);
+}
+
+export async function updateProductStock(id: number, amount: number) {
+  return await stocksRepository.updateProductStock(id, amount);
+}
+
 const stocksService = {
   createProductStock,
   getProductStock,
+  deleteProductStock,
+  updateProductStock,
 };
 
 export default stocksService;
