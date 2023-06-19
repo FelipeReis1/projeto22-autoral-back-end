@@ -7,7 +7,7 @@ import { loadEnv, connectDb, disconnectDB } from "./config";
 loadEnv();
 
 import { handleApplicationErrors } from "./middlewares";
-import { authenticationRouter } from "./routers";
+import { authenticationRouter, cartRouter, stocksRouter } from "./routers";
 import { productsRouter } from "./routers/products-router";
 
 const app = express();
@@ -16,6 +16,8 @@ app
   .use(express.json())
   .use("/auth", authenticationRouter)
   .use("/", productsRouter)
+  .use("/cart", cartRouter)
+  .use("/stock", stocksRouter)
   .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
