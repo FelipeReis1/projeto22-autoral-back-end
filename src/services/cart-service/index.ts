@@ -20,6 +20,12 @@ export async function createCart(
   return await cartRepository.createCart(userId, productId, amount);
 }
 
-const cartService = { getCart, createCart };
+export async function deleteCart(id: number) {
+  const cartExists = await cartRepository.getCart(id);
+  if (!cartExists) throw notFoundError();
+  await cartRepository.deleteCart(id);
+}
+
+const cartService = { getCart, createCart, deleteCart };
 
 export default cartService;
