@@ -52,6 +52,15 @@ async function createCart(userId: number, productId: number, amount: number) {
   });
 }
 
-const cartRepository = { getCart, createCart };
+async function deleteCart(id: number) {
+  const cart = await getCart(id);
+  await prisma.stock.update({
+    where: { productId: cart.productId },
+    data: { amount: { increment: cart.amount } },
+  });
+  return prisma.cart.delete({ where: { id } });
+}
+
+const cartRepository = { getCart, createCart, deleteCart };
 
 export default cartRepository;
