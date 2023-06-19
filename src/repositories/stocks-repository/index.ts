@@ -14,9 +14,22 @@ async function createProductStock(id: number, data: number) {
   });
 }
 
+async function deleteProductStock(productId: number) {
+  return prisma.stock.delete({ where: { productId } });
+}
+
+async function updateProductStock(id: number, amount: number) {
+  return prisma.stock.update({
+    where: { productId: id },
+    data: { amount: amount },
+  });
+}
+
 const stocksRepository = {
   getProductStock,
   createProductStock,
+  deleteProductStock,
+  updateProductStock,
 };
 
 export default stocksRepository;
