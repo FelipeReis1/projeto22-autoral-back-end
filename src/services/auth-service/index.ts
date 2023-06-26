@@ -41,7 +41,7 @@ export async function loginUser({ email, password }: LoginUserParams) {
   return token;
 }
 
-async function checkIfUserExists(email: string) {
+export async function checkIfUserExists(email: string) {
   const userExists = await authRepository.findByEmail(email);
   if (!userExists) throw invalidCredentialsError();
 
@@ -58,6 +58,7 @@ export type LoginUserParams = Pick<users, "email" | "password">;
 const authService = {
   createUser,
   loginUser,
+  checkIfUserExists,
 };
 
 export default authService;
