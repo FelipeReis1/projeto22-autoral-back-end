@@ -12,6 +12,15 @@ export async function getCart(req: Request, res: Response) {
   }
 }
 
+export async function getCarts(req: Request, res: Response) {
+  try {
+    const carts = await cartService.getCarts();
+    return res.status(httpStatus.OK).send(carts);
+  } catch (error) {
+    return res.status(httpStatus.NOT_FOUND).send(error.message);
+  }
+}
+
 export async function createCart(req: Request, res: Response) {
   const { userId, productId, amount } = req.body;
   try {
@@ -39,3 +48,18 @@ export async function deleteCart(req: Request, res: Response) {
     }
   }
 }
+
+// export async function addToCart(req: Request, res: Response) {
+//   const { id } = req.params;
+//   const { productId, amount } = req.body;
+//   try {
+//     await cartService.addToCart(Number(id), Number(productId), Number(amount));
+//     return res.sendStatus(httpStatus.OK);
+//   } catch (error) {
+//     if (error.name === "NotFoundError") {
+//       return res.status(httpStatus.NOT_FOUND).send(error.message);
+//     } else {
+//       return res.status(httpStatus.BAD_REQUEST).send(error.message);
+//     }
+//   }
+// }
