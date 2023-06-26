@@ -24,8 +24,9 @@ export async function createUser(req: Request, res: Response) {
 export async function loginUser(req: Request, res: Response) {
   const { email, password } = req.body as LoginUserParams;
   try {
+    const { id, name } = await authService.checkIfUserExists(email);
     const token = await authService.loginUser({ email, password });
-    return res.status(httpStatus.OK).send(token);
+    return res.status(httpStatus.OK).send({ token, name, id });
   } catch (error: any) {
     return res.status(httpStatus.UNAUTHORIZED).send(error.message);
   }
