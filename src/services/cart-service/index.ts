@@ -9,6 +9,12 @@ export async function getCart(id: number) {
   return cart;
 }
 
+export async function getCarts() {
+  const carts = await cartRepository.getCarts();
+  if (!carts) throw notFoundError();
+  return carts;
+}
+
 export async function createCart(
   userId: number,
   productId: number,
@@ -26,6 +32,17 @@ export async function deleteCart(id: number) {
   await cartRepository.deleteCart(id);
 }
 
-const cartService = { getCart, createCart, deleteCart };
+// export async function addToCart(
+//   id: number,
+//   productId: number,
+//   amount: number
+// ): Promise<cart> {
+//   const product = await stocksRepository.getProductStock(productId);
+//   if (product.amount < amount)
+//     throw new Error("Quantidade solicitada não disponível em estoque!");
+//   return await cartRepository.addToCart(id, productId, amount);
+// }
+
+const cartService = { getCart, createCart, deleteCart, getCarts };
 
 export default cartService;
