@@ -1,3 +1,4 @@
+import productsRepository from "repositories/products-repository";
 import { prisma } from "../../config";
 
 async function getCart(id: number) {
@@ -18,6 +19,10 @@ async function getCart(id: number) {
       },
     },
   });
+}
+
+async function getCarts() {
+  return prisma.cart.findMany();
 }
 
 async function createCart(userId: number, productId: number, amount: number) {
@@ -52,6 +57,33 @@ async function createCart(userId: number, productId: number, amount: number) {
   });
 }
 
+// async function addToCart(id: number, productId: number, amount: number) {
+//   await prisma.stock.update({
+//     where: { productId },
+//     data: { amount: { decrement: amount } },
+//   });
+//   const product = await productsRepository.findProductById(productId);
+//   return prisma.cart.update({
+//     where: { id },
+//     data: {
+//       products: {
+//         update: {
+//           name: product.name,
+//           description: product.description,
+//           price: product.price,
+//           image: product.image,
+//           itemQuality: product.itemQuality,
+//           category: product.category,
+//         },
+//       },
+//     },
+//     include: {
+//       users: true,
+//       products: true,
+//     },
+//   });
+// }
+
 async function deleteCart(id: number) {
   const cart = await getCart(id);
   await prisma.stock.update({
@@ -61,6 +93,6 @@ async function deleteCart(id: number) {
   return prisma.cart.delete({ where: { id } });
 }
 
-const cartRepository = { getCart, createCart, deleteCart };
+const cartRepository = { getCart, createCart, deleteCart, getCarts };
 
 export default cartRepository;
