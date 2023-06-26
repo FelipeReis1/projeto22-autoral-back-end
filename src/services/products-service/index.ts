@@ -69,14 +69,6 @@ export async function updateProduct(
     category,
   }: CreateProductParams
 ): Promise<products> {
-  await checkForSameProduct(
-    name,
-    description,
-    price,
-    image,
-    itemQuality,
-    category
-  );
   return productsRepository.updateProduct(id, {
     name,
     description,
