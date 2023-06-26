@@ -9,6 +9,7 @@ const server = supertest(app);
 
 beforeAll(async () => {
   await init();
+  await prisma.cart.deleteMany({});
   await prisma.users.deleteMany({});
 });
 
